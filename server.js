@@ -67,20 +67,32 @@ app.post("/api/saved", function(req, res) {
    // to update the clickCount
   // { upsert: true } is an optional object we can pass into the findOneAndUpdate method
   // If included, Mongoose will create a new document matching the description if one is not found
-  Article.findOneAndUpdate({
-    clickID: clickID
-  }, {
-    $set: {
-      clicks: clicks
-    }
-  }, { upsert: true }).exec(function(err) {
+  Article.findOneAndUpdate({ title: title}, 
+    {$set: {date: date, url: url}}, { upsert: true }).exec(function(err) {
 
     if (err) {
       console.log(err);
     }
     else {
-      res.send("Updated Click Count!");
+      res.send("Updated!");
     }
   });
 });
 
+app.delete("/app/saved"), function(req, res) {
+  Article.findOneAndRemove({ title:title}).exec(function(err) {
+
+    if (err) {
+      console.log(err);
+    }
+    else {
+      res.send("Deleted!");
+    }
+  });
+}
+// -------------------------------------------------
+
+// Starting our express server
+app.listen(PORT, function() {
+  console.log("App listening on PORT: " + PORT);
+});
